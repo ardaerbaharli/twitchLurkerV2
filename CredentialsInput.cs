@@ -68,6 +68,7 @@ namespace TwitchLurkerV2
             }
             else
             {
+                Lurker.credentialsInputExitStatus = true;
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 string path = Path.Combine(appDataPath, @"Chastoca");
                 path = Path.Combine(path, "LurkerV2");
@@ -87,6 +88,11 @@ namespace TwitchLurkerV2
         private void linkAuthToken_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://twitchtokengenerator.com");
+        }
+
+        private void btnClose_Click_1(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

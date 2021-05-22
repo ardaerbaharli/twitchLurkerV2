@@ -36,6 +36,7 @@ namespace TwitchLurkerV2
             this.txtLurkerToken = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.linkAuthToken = new System.Windows.Forms.LinkLabel();
+            this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -105,12 +106,26 @@ namespace TwitchLurkerV2
             this.linkAuthToken.Text = "?";
             this.linkAuthToken.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkAuthToken_LinkClicked);
             // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnClose.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.Location = new System.Drawing.Point(337, 12);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(33, 26);
+            this.btnClose.TabIndex = 6;
+            this.btnClose.Text = "X";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click_1);
+            // 
             // CredentialsInput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(41)))), ((int)(((byte)(41)))));
             this.ClientSize = new System.Drawing.Size(376, 230);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.linkAuthToken);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.txtLurkerToken);
@@ -142,5 +157,6 @@ namespace TwitchLurkerV2
         private System.Windows.Forms.TextBox txtLurkerToken;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel linkAuthToken;
+        private System.Windows.Forms.Button btnClose;
     }
 }

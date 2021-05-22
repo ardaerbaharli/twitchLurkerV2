@@ -44,10 +44,12 @@ namespace TwitchLurkerV2
         }
         #endregion
 
-       
-        private int controlCount;
+
+        private int controlCount = 0;
         private int sentMessageCount = 0;
         private DateTime startTime;
+
+        public static bool credentialsInputExitStatus = false;
 
         private List<string> emoteList = new List<string>() { };
         public static List<string> blacklistedChannelList = new List<string>() { };
@@ -121,7 +123,8 @@ namespace TwitchLurkerV2
         }
         private void CredentialsInput_FormClosed(object sender, FormClosedEventArgs e)
         {
-            SetCredentials();
+            if (credentialsInputExitStatus == true)
+                SetCredentials();
         }
         private bool SetEmotes()
         {
@@ -139,13 +142,11 @@ namespace TwitchLurkerV2
                 bool doesEmoteFileExists = File.Exists(path);
                 if (doesEmoteFileExists)
                 {
-                    this.Show();
                     // read the file               
-                    emoteList = File.ReadAllLines(path).ToList();                 
+                    emoteList = File.ReadAllLines(path).ToList();
                 }
                 else
                 {
-                   
                     var content = new List<string>() {
                         "LUL", "Kappa", ":)", "PogChamp", "D:", "HeyGuys", "Wowee",
                         "HypeLol", "voyunHey", "voyunSip", "voyunLurk", "voyunMEGA",
@@ -179,13 +180,11 @@ namespace TwitchLurkerV2
                 bool doesEmoteFileExists = File.Exists(path);
                 if (doesEmoteFileExists)
                 {
-                    this.Show();
                     // read the file               
-                    emoteList = File.ReadAllLines(path).ToList();
+                    blacklistedChannelList = File.ReadAllLines(path).ToList();
                 }
                 else
                 {
-                   
                     var content = new List<string>() { "RocketLeague", "VALORANT_Esports_TR", "ROSHTEIN", "VonDice", "DeuceAce" };
                     File.WriteAllLines(path, content);
                     SetBlacklistedChannels();
@@ -205,7 +204,7 @@ namespace TwitchLurkerV2
         public static string lurkerToken = "";
         private static string lurkerID = "";
         private readonly string clientId = "gp762nuuoqcoxypju8c569th9wz7q5";
-       // private readonly ConnectionCredentials credentials = new ConnectionCredentials(username, lurkerToken);
+        // private readonly ConnectionCredentials credentials = new ConnectionCredentials(username, lurkerToken);
         private TwitchClient client;
         private TwitchAPI api;
         private void Connect()
@@ -320,6 +319,8 @@ namespace TwitchLurkerV2
         {
             try
             {
+                controlCount++;
+
                 // if its 50th time calling this method, update follow list
                 if (controlCount == 50)
                 {
@@ -327,9 +328,9 @@ namespace TwitchLurkerV2
                     await RetrieveFollowList();
                 }
 
-                controlCount++;
-                if (!client.IsConnected)
-                    client.Connect();
+                if (client != null)
+                    if (!client.IsConnected)
+                        client.Connect();
                 // check new subs and new online streams
                 var joinedChannelsAPI = client.JoinedChannels;
                 if (joinedChannels.Count != joinedChannels.Count)
