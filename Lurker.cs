@@ -219,19 +219,60 @@ namespace TwitchLurkerV2
             api.Settings.AccessToken = lurkerToken;
 
             client.Connect();
+
+            //var channel = (await api.V5.Users.GetUserByNameAsync("odisnos")).Matches.First();
+            //string channelID = channel.Id;
+            //string streamURL = "";
+            //TimeSpan? uptime = new TimeSpan();
+            //if (await CriteriaControls.IsOnline(api, channelID))
+            //{
+            //    uptime = await api.V5.Streams.GetUptimeAsync(channelID);
+            //    var stream = await api.V5.Channels.GetChannelVideosAsync(channelID, 1, 1);
+            //    streamURL = stream.Videos.FirstOrDefault().Url;
+            //}
         }
 
         #region Events
-        private void Client_OnMessageReceived(object sender, TwitchLib.Client.Events.OnMessageReceivedArgs e)
+        private async void Client_OnMessageReceived(object sender, TwitchLib.Client.Events.OnMessageReceivedArgs e)
         {
             if (e.ChatMessage.Message.Contains(username))
             {
-                Log mentionLog = new Log();
-                mentionLog.LogName = "Mentions";
-                mentionLog.Message = $"{e.ChatMessage.Channel} || {e.ChatMessage.Username} : {e.ChatMessage.Message} ";
-                LogHandler.Log(mentionLog);
+                try
+                {
+                    if (!string.IsNullOrEmpty(e.ChatMessage.Channel))
+                    {
+                        var channel = (await api.V5.Users.GetUserByNameAsync(e.ChatMessage.Channel)).Matches.First();
+                        if (channel != null)
+                        {
+                            string channelID = channel.Id;
+                            string streamURL = "<streamURL>";
+                            TimeSpan? uptimeTS = new TimeSpan();
+
+                            if (await CriteriaControls.IsOnline(api, channelID))
+                            {
+                                uptimeTS = await api.V5.Streams.GetUptimeAsync(channelID);
+                                var stream = await api.V5.Channels.GetChannelVideosAsync(channelID, 1, 1);
+                                streamURL = stream.Videos.FirstOrDefault().Url;
+                            }
+
+                            string uptime = "<time>";
+                            if (uptimeTS.HasValue)
+                                uptime = $"{uptimeTS.Value.Hours}:{uptimeTS.Value.Minutes}:{uptimeTS.Value.Seconds}";
+
+                            Log mentionLog = new Log();
+                            mentionLog.LogName = "Mentions";
+                            mentionLog.Message = $"{e.ChatMessage.Channel} || {uptime} >>> {streamURL} || {e.ChatMessage.Username} : {e.ChatMessage.Message} ";
+                            LogHandler.Log(mentionLog);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogHandler.CrashReport(ex);
+                }
             }
         }
+
         private async void Client_OnConnected(object sender, TwitchLib.Client.Events.OnConnectedArgs e)
         {
             lblConnected.Text = "Connected to " + username + ".";
