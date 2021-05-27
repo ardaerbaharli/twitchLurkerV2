@@ -219,17 +219,6 @@ namespace TwitchLurkerV2
             api.Settings.AccessToken = lurkerToken;
 
             client.Connect();
-
-            //var channel = (await api.V5.Users.GetUserByNameAsync("odisnos")).Matches.First();
-            //string channelID = channel.Id;
-            //string streamURL = "";
-            //TimeSpan? uptime = new TimeSpan();
-            //if (await CriteriaControls.IsOnline(api, channelID))
-            //{
-            //    uptime = await api.V5.Streams.GetUptimeAsync(channelID);
-            //    var stream = await api.V5.Channels.GetChannelVideosAsync(channelID, 1, 1);
-            //    streamURL = stream.Videos.FirstOrDefault().Url;
-            //}
         }
 
         #region Events
@@ -241,7 +230,7 @@ namespace TwitchLurkerV2
                 {
                     if (!string.IsNullOrEmpty(e.ChatMessage.Channel))
                     {
-                        var channel = (await api.V5.Users.GetUserByNameAsync(e.ChatMessage.Channel)).Matches.First();
+                        var channel = (await api.V5.Users.GetUserByNameAsync(e.ChatMessage.Channel)).Matches.FirstOrDefault();
                         if (channel != null)
                         {
                             string channelID = channel.Id;
@@ -251,7 +240,7 @@ namespace TwitchLurkerV2
                             if (await CriteriaControls.IsOnline(api, channelID))
                             {
                                 uptimeTS = await api.V5.Streams.GetUptimeAsync(channelID);
-                                var stream = await api.V5.Channels.GetChannelVideosAsync(channelID, 1, 1);
+                                var stream = await api.V5.Channels.GetChannelVideosAsync(channelID, 1, 0);
                                 streamURL = stream.Videos.FirstOrDefault().Url;
                             }
 
@@ -259,9 +248,21 @@ namespace TwitchLurkerV2
                             if (uptimeTS.HasValue)
                                 uptime = $"{uptimeTS.Value.Hours}:{uptimeTS.Value.Minutes}:{uptimeTS.Value.Seconds}";
 
-                            Log mentionLog = new Log();
-                            mentionLog.LogName = "Mentions";
-                            mentionLog.Message = $"{e.ChatMessage.Channel} || {uptime} >>> {streamURL} || {e.ChatMessage.Username} : {e.ChatMessage.Message} ";
+                            Random rand = new Random();
+                            int linkID = rand.Next(10000000, 100000000);
+
+                            Log linkIDLog = new Log();
+                            linkIDLog.LogName = "LinkIDs";
+                            linkIDLog.Message = $"{linkID} || {uptime} >> {streamURL}";
+
+
+                            LogHandler.Log(linkIDLog);
+
+                            Log mentionLog = new Log
+                            {
+                                LogName = "Mentions",
+                                Message = $"{e.ChatMessage.Channel} || link ID : {linkID} || {e.ChatMessage.Username} : {e.ChatMessage.Message} "
+                            };
                             LogHandler.Log(mentionLog);
                         }
                     }
@@ -276,6 +277,7 @@ namespace TwitchLurkerV2
         private async void Client_OnConnected(object sender, TwitchLib.Client.Events.OnConnectedArgs e)
         {
             lblConnected.Text = "Connected to " + username + ".";
+
             bool isJoined = await StartLurking();
 
             if (isJoined)
