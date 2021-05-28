@@ -18,6 +18,7 @@ Bot will come with default settings as below:
 
 >In order to change that, you can change the value of **if (channel.Stream.Viewers > 2000)** to any value you want it to be.
 
+```
 public static async Task<bool> DoesStreamHaveMoreThan2000Viewers(TwitchAPI api, string channelID)
         {
             try
@@ -42,3 +43,4 @@ public static async Task<bool> DoesStreamHaveMoreThan2000Viewers(TwitchAPI api, 
                 return false;
             }
         }
+```
