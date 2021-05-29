@@ -68,4 +68,4 @@ First, go to Windows search and type in *%appdata%*, then navigate to **Chastoca
 
 <br>
 
-# BE RESPONSIBLE AND DO NOT USE THIS BOT FOR MALICIOUS INTENT. HAVE FUN!
+## BE RESPONSIBLE AND DO NOT USE THIS BOT FOR MALICIOUS INTENT. HAVE FUN!
