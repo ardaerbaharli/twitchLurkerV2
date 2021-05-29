@@ -8,7 +8,7 @@
 It acts as a chatter and sends messages to as many channels as you wish at the same time without you needing to open up Twitch.
 It also lets you benefit from subscription gifts and drops as long as you leave it on.
 
-<br><br>
+<br>
 
 ### How To Edit Twitch Lurker?
 
@@ -16,7 +16,7 @@ From <a href="https://github.com/ardaerbaharli/twitchLurkerV2/blob/main/Criteria
 
 ## IMPORTANT NOTE: It is not suggested that you change the default values in *CriteriaControl.cs* but we all make mistakes in the heat of passion.
 
-<br><br>
+<br>
 
 -Bot sends text messages to channels only if the channel has more than 2000 viewers.
 
@@ -34,25 +34,25 @@ public static async Task<bool> DoesStreamHaveMoreThan2000Viewers(TwitchAPI api, 
                         if (channel.Stream.Viewers > 2000)
                             return true;
 ```
-<br><br>
+<br>
 
 -Bot has default blacklisted channels. You can delete the current ones or add more channels.
 
 >In order to add more channels, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>BlacklistedChannels* and type in the channel ID you want to blacklist.
 
-<br><br>
+<br>
 
 -Bot only sends emotes as messages and has some default emotes. You can delete the default ones or add more to them.
 
 >In order to edit emotes, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>Emotes* and edit emotes in the text file as you please.
 
-<br><br>
+<br>
 
 -You can change your connection credentials if you wish to change the account connected to bot.
 
 >In order to change connection credentials, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>ConnectionCredentials* and change login details.
 
-<br><br><br>
+<br><br>
 
 ### How to check log details?
 
@@ -60,11 +60,11 @@ First, go to Windows search and type in *%appdata%*, then navigate to **Chastoca
 
 <br>
 
-> -You can check crash reports from **CrashReports**
-> -You can see if anyone mentioned you in the chat from **Mentions**.
+> - You can check crash reports from **CrashReports**
+> - You can see if anyone mentioned you in the chat from **Mentions**.
 > In mentions you have two files:
-> -From ChatLogs, you can see the channel name, link ID, person who sent the message and the message itself.
-> -From StreamIDs, you can see when the message was sent and link of the clip from the time message was sent.
+> - From ChatLogs, you can see the channel name, link ID, person who sent the message and the message itself.
+> - From StreamIDs, you can see when the message was sent and link of the clip from the time message was sent.
 
 <br>
 
