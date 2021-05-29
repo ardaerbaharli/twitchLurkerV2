@@ -32,6 +32,7 @@ public static async Task<bool> DoesStreamHaveMoreThan2000Viewers(TwitchAPI api, 
                         if (channel.Stream.Viewers > 2000)
                             return true;
 ```
+<br><br>
 
 -Bot has default blacklisted channels. It is not suggested that you delete default channels but you can add more.
 
