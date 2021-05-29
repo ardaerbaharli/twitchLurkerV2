@@ -10,7 +10,7 @@ It also lets you benefit from subscription gifts and drops as long as you leave 
 
 <br><br>
 
-### How To Edit Tiwtch Lurker?
+### How To Edit Twitch Lurker?
 
 From <a href="https://github.com/ardaerbaharli/twitchLurkerV2/blob/main/CriteriaControls.cs"> here</a> (file name on your local repo would be CriteriaControl.cs), you can edit viewer count and which files to use for criteria control.
 
@@ -36,18 +36,34 @@ public static async Task<bool> DoesStreamHaveMoreThan2000Viewers(TwitchAPI api, 
 ```
 <br><br>
 
--Bot has default blacklisted channels. It is not suggested that you delete default channels but you can add more.
+-Bot has default blacklisted channels. You can delete the current ones or add more channels.
 
->In order to add more channels, go to windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>BlacklistedChannels* and type in the channel ID you want to blacklist.
+>In order to add more channels, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>BlacklistedChannels* and type in the channel ID you want to blacklist.
 
 <br><br>
 
 -Bot only sends emotes as messages and has some default emotes. You can delete the default ones or add more to them.
 
->In order to edit emotes, go to windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>Emotes* and edit emotes in the text file as you please.
+>In order to edit emotes, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>Emotes* and edit emotes in the text file as you please.
 
 <br><br>
 
 -You can change your connection credentials if you wish to change the account connected to bot.
 
->In order to change connection credentials, go to windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>ConnectionCredentials* and change login details.
+>In order to change connection credentials, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>ConnectionCredentials* and change login details.
+
+<br><br><br>
+
+### How to check log details?
+
+First, go to Windows search and type in *%appdata%*, then navigate to **Chastoca>LurkerV2**. From here:
+
+<br>
+
+> -You can check crash reports from **CrashReports**
+> -You can see if anyone mentioned you in the chat from **Mentions**.
+> In mentions you have two files:
+> -From ChatLogs, you can see the channel name, link ID, person who sent the message and the message itself.
+> -From StreamIDs, you can see when the message was sent and link of the clip from the time message was sent.
+
+# BE RESPONSIBLE AND DO NOT USE THIS BOT FOR MALICIOUS INTENT. HAVE FUN!
