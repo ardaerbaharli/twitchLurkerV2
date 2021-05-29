@@ -37,7 +37,7 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.lblSubCount = new System.Windows.Forms.Label();
             this.lblMessageCount = new System.Windows.Forms.Label();
-            this.uptime = new System.Windows.Forms.Timer(this.components);
+            this.uptimeTimer = new System.Windows.Forms.Timer(this.components);
             this.lblUptime = new System.Windows.Forms.Label();
             this.stayOnline = new System.Windows.Forms.Timer(this.components);
             this.checkMessages = new System.Windows.Forms.CheckBox();
@@ -111,10 +111,10 @@
             this.lblMessageCount.TabIndex = 0;
             this.lblMessageCount.Text = "Sent 0 messages.";
             // 
-            // uptime
+            // uptimeTimer
             // 
-            this.uptime.Interval = 1000;
-            this.uptime.Tick += new System.EventHandler(this.Uptime_Tick);
+            this.uptimeTimer.Interval = 1000;
+            this.uptimeTimer.Tick += new System.EventHandler(this.Uptime_Tick);
             // 
             // lblUptime
             // 
@@ -183,7 +183,7 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblSubCount;
         private System.Windows.Forms.Label lblMessageCount;
-        private System.Windows.Forms.Timer uptime;
+        private System.Windows.Forms.Timer uptimeTimer;
         private System.Windows.Forms.Label lblUptime;
         private System.Windows.Forms.Timer stayOnline;
         private System.Windows.Forms.CheckBox checkMessages;

@@ -10,9 +10,11 @@ namespace TwitchLurkerV2
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string logDirectory = Path.Combine(appDataPath, @"Chastoca");
             logDirectory = Path.Combine(logDirectory, "LurkerV2");
-            if (!string.IsNullOrEmpty(log.HigherPath))
-                logDirectory = Path.Combine(logDirectory, log.HigherPath);
-            logDirectory = Path.Combine(logDirectory, log.LogName);
+            foreach (var item in log.FolderDirectory)
+            {
+                logDirectory = Path.Combine(logDirectory, item);
+            }
+            //    logDirectory = Path.Combine(logDirectory, log.LogName);
 
             if (!Directory.Exists(logDirectory))
                 Directory.CreateDirectory(logDirectory);
@@ -31,11 +33,11 @@ namespace TwitchLurkerV2
 
         public static void CrashReport(Exception ex)
         {
-            Log crashReport = new Log
-            {
-                LogName = "CrashReports",
-                Message = string.Format("Exception message: {0}\nStack trace:\n{1}", ex.Message, ex.StackTrace)
-            };
+            Log crashReport = new Log();
+            crashReport.FolderDirectory = new string[] { "CrashReports" };
+            crashReport.LogName = "CrashReport";
+            crashReport.Message = string.Format("Exception message: {0}\nStack trace:\n{1}", ex.Message, ex.StackTrace);
+            crashReport.TimeStamp = true;
             Log(crashReport);
         }
     }

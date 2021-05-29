@@ -5,6 +5,7 @@ namespace TwitchLurkerV2
     {
         public string Message { get; set; }
         public string LogName { get; set; }
-        public string HigherPath { get; set; }
+        public string[] FolderDirectory { get; set; }
+        public bool TimeStamp { get; set; }
     }
 }

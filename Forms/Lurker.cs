@@ -72,14 +72,13 @@ namespace TwitchLurkerV2
             // Update online channels
             updateOnlineChannelsTimer.Interval = 1000 * 60 * messageIntervalMinutes;
 
-            uptime.Interval = 1000 * 33;
-            uptime.Start();
+            uptimeTimer.Interval = 1000 * 33;
+            uptimeTimer.Start();
             startTime = DateTime.Now;
 
             // send data between forms
             Control.CheckForIllegalCrossThreadCalls = false;
         }
-
 
         #region Configurations
         private void Configurate()
@@ -154,7 +153,7 @@ namespace TwitchLurkerV2
                     this.Show();
                     // read the file               
                     string[] text = File.ReadAllLines(path);
-                    username = text[0].Substring("username: ".Length);
+                    lurkerName = text[0].Substring("username: ".Length);
                     lurkerToken = text[1].Substring("lurkerToken: ".Length);
                     Connect();
                 }
@@ -293,7 +292,7 @@ namespace TwitchLurkerV2
         #endregion
 
         #region Twitch Side
-        public static string username = "";
+        public static string lurkerName = "";
         public static string lurkerToken = "";
         private static string lurkerID = "";
         private readonly string clientId = "gp762nuuoqcoxypju8c569th9wz7q5";
@@ -302,11 +301,13 @@ namespace TwitchLurkerV2
         private TwitchAPI api;
         private void Connect()
         {
-            ConnectionCredentials credentials = new ConnectionCredentials(username, lurkerToken);
+            ConnectionCredentials credentials = new ConnectionCredentials(lurkerName, lurkerToken);
             client = new TwitchClient();
             client.Initialize(credentials);
             client.OnConnected += Client_OnConnected;
             client.OnMessageReceived += Client_OnMessageReceived;
+            client.OnWhisperReceived += Client_OnWhisperReceived;
+            client.OnWhisperSent += Client_OnWhisperSent;
             api = new TwitchAPI();
             api.Settings.ClientId = clientId;
             api.Settings.AccessToken = lurkerToken;
@@ -315,9 +316,26 @@ namespace TwitchLurkerV2
         }
 
         #region Events
+        private async void Client_OnConnected(object sender, TwitchLib.Client.Events.OnConnectedArgs e)
+        {
+            lblConnected.Text = "Connected to " + lurkerName + ".";
+            bool isJoined = await StartLurking();
+
+            if (isJoined)
+            {
+                updateOnlineChannelsTimer.Enabled = true;
+                updateOnlineChannelsTimer.Start();
+            }
+            else
+            {
+                Exception ex = new Exception("Client didn't join the channels.");
+                LogHandler.CrashReport(ex);
+                this.Close();
+            }
+        }
         private async void Client_OnMessageReceived(object sender, TwitchLib.Client.Events.OnMessageReceivedArgs e)
         {
-            if (e.ChatMessage.Message.Contains(username))
+            if (e.ChatMessage.Message.Contains(lurkerName))
             {
                 try
                 {
@@ -345,15 +363,17 @@ namespace TwitchLurkerV2
                             int streamID = rand.Next(10000000, 100000000);
 
                             Log streamIDLog = new Log();
-                            streamIDLog.HigherPath = "Mentions";
-                            streamIDLog.LogName = "StreamIDs";
+                            streamIDLog.FolderDirectory = new string[] { "Mentions", "StreamIDs" };
+                            streamIDLog.LogName = "StreamID";
                             streamIDLog.Message = $"{streamID} || Time: {uptime} >> Link: {streamURL}";
+                            streamIDLog.TimeStamp = true;
                             LogHandler.Log(streamIDLog);
 
                             Log mentionLog = new Log();
-                            mentionLog.HigherPath = "Mentions";
-                            mentionLog.LogName = "ChatLogs";
+                            mentionLog.FolderDirectory = new string[] { "Mentions", "ChatLogs" };
+                            mentionLog.LogName = "ChatLog";
                             mentionLog.Message = $"{e.ChatMessage.Channel} || Stream ID : {streamID} || {e.ChatMessage.Username} : {e.ChatMessage.Message} ";
+                            mentionLog.TimeStamp = true;
                             LogHandler.Log(mentionLog);
                         }
                     }
@@ -365,22 +385,39 @@ namespace TwitchLurkerV2
             }
         }
 
-        private async void Client_OnConnected(object sender, TwitchLib.Client.Events.OnConnectedArgs e)
+        private void Client_OnWhisperReceived(object sender, TwitchLib.Client.Events.OnWhisperReceivedArgs e)
         {
-            lblConnected.Text = "Connected to " + username + ".";
-
-            bool isJoined = await StartLurking();
-
-            if (isJoined)
+            try
             {
-                updateOnlineChannelsTimer.Enabled = true;
-                updateOnlineChannelsTimer.Start();
+                string username = e.WhisperMessage.Username;
+                string message = e.WhisperMessage.Message;
+                Log whisper = new Log();
+                whisper.FolderDirectory = new string[] { "Whispers" };
+                whisper.LogName = e.WhisperMessage.Username;
+                whisper.TimeStamp = false;
+                whisper.Message = $"{DateTime.Now} || {username} : {message}";
+                LogHandler.Log(whisper);
             }
-            else
+            catch (Exception ex)
             {
-                Exception ex = new Exception("Client didn't join the channels.");
                 LogHandler.CrashReport(ex);
-                this.Close();
+            }
+
+        }
+        private void Client_OnWhisperSent(object sender, TwitchLib.Client.Events.OnWhisperSentArgs e)
+        {
+            try
+            {
+                Log whisper = new Log();
+                whisper.FolderDirectory = new string[] { "Whispers" };
+                whisper.LogName = e.Receiver;
+                whisper.TimeStamp = false;
+                whisper.Message = $"{DateTime.Now} || {lurkerName} : {e.Message}";
+                LogHandler.Log(whisper);
+            }
+            catch (Exception ex)
+            {
+                LogHandler.CrashReport(ex);
             }
         }
         #endregion
@@ -412,7 +449,7 @@ namespace TwitchLurkerV2
                 followList.Clear();
 
                 // get the lurker account
-                var lurker = (await api.V5.Users.GetUserByNameAsync(username)).Matches.First();
+                var lurker = (await api.V5.Users.GetUserByNameAsync(lurkerName)).Matches.First();
                 lurkerID = lurker.Id;
 
                 // request first 100 followers
