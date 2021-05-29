@@ -48,6 +48,7 @@ namespace TwitchLurkerV2
         private int controlCount = 0;
         private int sentMessageCount = 0;
         private DateTime startTime;
+        private int messageIntervalMinutes = 4;
 
         public static bool credentialsInputExitStatus = false;
 
@@ -61,6 +62,7 @@ namespace TwitchLurkerV2
         private void Lurker_Shown(object sender, EventArgs e)
         {
             this.Hide();
+            Configurate();
 
             // design
             btnClose.FlatStyle = FlatStyle.Flat;
@@ -68,7 +70,7 @@ namespace TwitchLurkerV2
             btnClose.TabStop = false;
 
             // Update online channels
-            updateOnlineChannelsTimer.Interval = 1000 * 60 * 4;
+            updateOnlineChannelsTimer.Interval = 1000 * 60 * messageIntervalMinutes;
 
             uptime.Interval = 1000 * 33;
             uptime.Start();
@@ -76,13 +78,63 @@ namespace TwitchLurkerV2
 
             // send data between forms
             Control.CheckForIllegalCrossThreadCalls = false;
+        }
 
+
+        #region Configurations
+        private void Configurate()
+        {
             SetCredentials();
+            SetMessagePreference();
             SetEmotes();
             SetBlacklistedChannels();
         }
+        private bool SetMessagePreference()
+        {
+            try
+            {
+                string prefName = "SendMessages";
 
-        #region Configurations
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string path = Path.Combine(appDataPath, @"Chastoca");
+                path = Path.Combine(path, "LurkerV2");
+                path = Path.Combine(path, "Config");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                path = Path.Combine(path, "Settings.txt");
+                bool doesEmoteFileExists = File.Exists(path);
+                if (doesEmoteFileExists)
+                {
+                    // read the file               
+                    var content = File.ReadAllLines(path).ToList();
+
+                    foreach (var item in content)
+                    {
+                        if (item.Contains(prefName))
+                        {
+                            bool state = bool.Parse(item.Substring(prefName.Length + ":".Length));
+                            checkMessages.Checked = state;
+                        }
+                    }
+                }
+                else
+                {
+                    bool state = true;
+                    var content = $"{prefName}:{state}";
+
+                    checkMessages.Checked = state;
+                    File.WriteAllText(path, content.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHandler.CrashReport(ex);
+                return false;
+            }
+            return true;
+        }
         private bool SetCredentials()
         {
             try
@@ -153,8 +205,8 @@ namespace TwitchLurkerV2
                         "ClappyHype", "voyunPog", "PrideLionYay", "OhMyDog ","OpieOP",
                         "TheRinger"};
 
+                    emoteList = content;
                     File.WriteAllLines(path, content.ToArray());
-                    SetEmotes();
                 }
             }
             catch (Exception ex)
@@ -186,8 +238,8 @@ namespace TwitchLurkerV2
                 else
                 {
                     var content = new List<string>() { "RocketLeague", "VALORANT_Esports_TR", "ROSHTEIN", "VonDice", "DeuceAce" };
+                    blacklistedChannelList = content;
                     File.WriteAllLines(path, content);
-                    SetBlacklistedChannels();
                 }
             }
             catch (Exception ex)
@@ -197,6 +249,47 @@ namespace TwitchLurkerV2
             }
             return true;
         }
+
+        #region Events
+        private void CheckMessages_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string prefName = "SendMessages";
+
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string path = Path.Combine(appDataPath, @"Chastoca");
+                path = Path.Combine(path, "LurkerV2");
+                path = Path.Combine(path, "Config");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                path = Path.Combine(path, "Settings.txt");
+                bool doesEmoteFileExists = File.Exists(path);
+                if (doesEmoteFileExists)
+                {
+                    List<string> content = File.ReadAllLines(path).ToList();
+
+                    foreach (var item in content.ToList())
+                    {
+                        if (item.Contains(prefName))
+                        {
+                            bool state = bool.Parse(item.Substring(prefName.Length + ":".Length));
+                            int index = content.FindLastIndex(x => x.Contains(prefName));
+                            content[index] = $"{prefName}:{!state}";
+                            File.WriteAllLines(path, content.ToArray());
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHandler.CrashReport(ex);
+            }
+        }
+        #endregion
         #endregion
 
         #region Twitch Side
@@ -249,20 +342,18 @@ namespace TwitchLurkerV2
                                 uptime = $"{uptimeTS.Value.Hours}:{uptimeTS.Value.Minutes}:{uptimeTS.Value.Seconds}";
 
                             Random rand = new Random();
-                            int linkID = rand.Next(10000000, 100000000);
+                            int streamID = rand.Next(10000000, 100000000);
 
-                            Log linkIDLog = new Log();
-                            linkIDLog.LogName = "LinkIDs";
-                            linkIDLog.Message = $"{linkID} || {uptime} >> {streamURL}";
+                            Log streamIDLog = new Log();
+                            streamIDLog.HigherPath = "Mentions";
+                            streamIDLog.LogName = "StreamIDs";
+                            streamIDLog.Message = $"{streamID} || Time: {uptime} >> Link: {streamURL}";
+                            LogHandler.Log(streamIDLog);
 
-
-                            LogHandler.Log(linkIDLog);
-
-                            Log mentionLog = new Log
-                            {
-                                LogName = "Mentions",
-                                Message = $"{e.ChatMessage.Channel} || link ID : {linkID} || {e.ChatMessage.Username} : {e.ChatMessage.Message} "
-                            };
+                            Log mentionLog = new Log();
+                            mentionLog.HigherPath = "Mentions";
+                            mentionLog.LogName = "ChatLogs";
+                            mentionLog.Message = $"{e.ChatMessage.Channel} || Stream ID : {streamID} || {e.ChatMessage.Username} : {e.ChatMessage.Message} ";
                             LogHandler.Log(mentionLog);
                         }
                     }
@@ -294,6 +385,7 @@ namespace TwitchLurkerV2
         }
         #endregion
 
+        #region Functions
         private async Task<bool> StartLurking()
         {
             try
@@ -449,15 +541,18 @@ namespace TwitchLurkerV2
         {
             try
             {
-                if (client.JoinedChannels.Any(x => x.Channel == channelName))
+                if (checkMessages.Checked)
                 {
-                    Random rand = new Random();
-                    int textIndex = rand.Next(0, emoteList.Count);
-                    string message = emoteList[textIndex];
-                    client.SendMessage(channelName, message);
-                    sentMessageCount++;
-                    lblMessageCount.Text = "Sent " + sentMessageCount + " messages.";
-                    return true;
+                    if (client.JoinedChannels.Any(x => x.Channel == channelName))
+                    {
+                        Random rand = new Random();
+                        int textIndex = rand.Next(0, emoteList.Count);
+                        string message = emoteList[textIndex];
+                        client.SendMessage(channelName, message);
+                        sentMessageCount++;
+                        lblMessageCount.Text = "Sent " + sentMessageCount + " messages.";
+                        return true;
+                    }
                 }
             }
             catch (Exception ex)
@@ -466,7 +561,9 @@ namespace TwitchLurkerV2
             }
             return false;
         }
-        private void stayOnline_Tick(object sender, EventArgs e)
+
+        #region Events
+        private void StayOnline_Tick(object sender, EventArgs e)
         {
             if (joinedChannels.Count > 0)
                 foreach (var c in joinedChannels.ToList())
@@ -474,10 +571,12 @@ namespace TwitchLurkerV2
                     client.JoinChannel(c);
                 }
         }
-        private async void updateOnlineChannelsTimer_Tick(object sender, EventArgs e)
+        private async void UpdateOnlineChannelsTimer_Tick(object sender, EventArgs e)
         {
             await JoinChannels();
         }
+        #endregion
+        #endregion
         #endregion
 
         #region Form Events

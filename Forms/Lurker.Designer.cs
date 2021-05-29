@@ -40,12 +40,13 @@
             this.uptime = new System.Windows.Forms.Timer(this.components);
             this.lblUptime = new System.Windows.Forms.Label();
             this.stayOnline = new System.Windows.Forms.Timer(this.components);
+            this.checkMessages = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
-            // timer
+            // updateOnlineChannelsTimer
             // 
             this.updateOnlineChannelsTimer.Enabled = true;
-            this.updateOnlineChannelsTimer.Tick += new System.EventHandler(this.updateOnlineChannelsTimer_Tick);
+            this.updateOnlineChannelsTimer.Tick += new System.EventHandler(this.UpdateOnlineChannelsTimer_Tick);
             // 
             // lblLurkCount
             // 
@@ -128,7 +129,21 @@
             // stayOnline
             // 
             this.stayOnline.Interval = 1000;
-            this.stayOnline.Tick += new System.EventHandler(this.stayOnline_Tick);
+            this.stayOnline.Tick += new System.EventHandler(this.StayOnline_Tick);
+            // 
+            // checkMessages
+            // 
+            this.checkMessages.AutoSize = true;
+            this.checkMessages.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkMessages.Checked = true;
+            this.checkMessages.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkMessages.Location = new System.Drawing.Point(299, 196);
+            this.checkMessages.Name = "checkMessages";
+            this.checkMessages.Size = new System.Drawing.Size(69, 17);
+            this.checkMessages.TabIndex = 6;
+            this.checkMessages.Text = "Message";
+            this.checkMessages.UseVisualStyleBackColor = true;
+            this.checkMessages.CheckedChanged += new System.EventHandler(this.CheckMessages_CheckedChanged);
             // 
             // Lurker
             // 
@@ -137,6 +152,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(41)))), ((int)(((byte)(41)))));
             this.ClientSize = new System.Drawing.Size(372, 225);
             this.ControlBox = false;
+            this.Controls.Add(this.checkMessages);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblConnected);
             this.Controls.Add(this.lblSubCount);
@@ -170,6 +186,7 @@
         private System.Windows.Forms.Timer uptime;
         private System.Windows.Forms.Label lblUptime;
         private System.Windows.Forms.Timer stayOnline;
+        private System.Windows.Forms.CheckBox checkMessages;
     }
 }
 

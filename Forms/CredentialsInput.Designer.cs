@@ -75,7 +75,7 @@ namespace TwitchLurkerV2
             this.btnSubmit.TabIndex = 3;
             this.btnSubmit.Text = "Submit";
             this.btnSubmit.UseVisualStyleBackColor = true;
-            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+            this.btnSubmit.Click += new System.EventHandler(this.BtnSubmit_Click);
             // 
             // txtLurkerToken
             // 
@@ -104,7 +104,7 @@ namespace TwitchLurkerV2
             this.linkAuthToken.TabIndex = 4;
             this.linkAuthToken.TabStop = true;
             this.linkAuthToken.Text = "?";
-            this.linkAuthToken.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkAuthToken_LinkClicked);
+            this.linkAuthToken.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkAuthToken_LinkClicked);
             // 
             // btnClose
             // 
@@ -117,7 +117,7 @@ namespace TwitchLurkerV2
             this.btnClose.TabIndex = 6;
             this.btnClose.Text = "X";
             this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click_1);
+            this.btnClose.Click += new System.EventHandler(this.BtnClose_Click_1);
             // 
             // CredentialsInput
             // 

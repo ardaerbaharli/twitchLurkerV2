@@ -52,12 +52,12 @@ namespace TwitchLurkerV2
             Control.CheckForIllegalCrossThreadCalls = false;
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void BtnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void btnSubmit_Click(object sender, EventArgs e)
+        private void BtnSubmit_Click(object sender, EventArgs e)
         {
             this.Hide();
             string username = txtUsername.Text;
@@ -85,12 +85,12 @@ namespace TwitchLurkerV2
             }
         }
 
-        private void linkAuthToken_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LinkAuthToken_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://twitchtokengenerator.com");
         }
 
-        private void btnClose_Click_1(object sender, EventArgs e)
+        private void BtnClose_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }
