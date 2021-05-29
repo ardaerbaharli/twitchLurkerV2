@@ -8,13 +8,15 @@ Download from <a href="https://github.com/ardaerbaharli/twitchLurkerV2/releases/
 It acts as a chatter and sends messages to as many channels as you wish at the same time without you needing to open up Twitch.
 It also lets you benefit from subscription gifts and drops as long as you leave it on.
 
+<br><br>
+
 ### How To Edit Tiwtch Lurker?
 
 From <a href="https://github.com/ardaerbaharli/twitchLurkerV2/blob/main/CriteriaControls.cs"> here</a> (file name on your local repo would be CriteriaControl.cs), you can edit a list of things.
 
 ##IMPORTANT NOTE: It is not suggested that you change the default values but we all make mistakes in the heat of passion.
 
-Bot will come with default settings as below:
+<br><br>
 
 -Bot sends text messages to channels only if the channel has more than 2000 viewers.
 
