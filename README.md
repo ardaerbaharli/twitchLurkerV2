@@ -66,4 +66,6 @@ First, go to Windows search and type in *%appdata%*, then navigate to **Chastoca
 > -From ChatLogs, you can see the channel name, link ID, person who sent the message and the message itself.
 > -From StreamIDs, you can see when the message was sent and link of the clip from the time message was sent.
 
+<br>
+
 # BE RESPONSIBLE AND DO NOT USE THIS BOT FOR MALICIOUS INTENT. HAVE FUN!
