@@ -44,7 +44,7 @@ public static async Task<bool> DoesStreamHaveMoreThan2000Viewers(TwitchAPI api, 
 
 -Bot only sends emotes as messages and has some default emotes. You can delete the default ones or add more to them.
 
->In order to edit emotes, go to windows search, and type in %appdata%, From there, go to *Chastoca>LurkerV2>Config>Emotes* and edit emotes in the text file as you please.
+>In order to edit emotes, go to windows search, and type in *%appdata%*, From there, go to *Chastoca>LurkerV2>Config>Emotes* and edit emotes in the text file as you please.
 
 <br><br>
 
