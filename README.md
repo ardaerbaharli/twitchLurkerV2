@@ -1,6 +1,6 @@
 # twitchLurkerV2
 
-#Download **Twitch Lurker** from <a href="https://github.com/ardaerbaharli/twitchLurkerV2/releases/"> here</a>
+# Download **Twitch Lurker** from <a href="https://github.com/ardaerbaharli/twitchLurkerV2/releases/"> here</a>
 
 ### What is Twitch Lurker?
 
@@ -14,7 +14,7 @@ It also lets you benefit from subscription gifts and drops as long as you leave 
 
 From <a href="https://github.com/ardaerbaharli/twitchLurkerV2/blob/main/CriteriaControls.cs"> here</a> (file name on your local repo would be CriteriaControl.cs), you can edit viewer count and which files to use for criteria control.
 
-##IMPORTANT NOTE: It is not suggested that you change the default values in *CriteriaControl.cs* but we all make mistakes in the heat of passion.
+## IMPORTANT NOTE: It is not suggested that you change the default values in *CriteriaControl.cs* but we all make mistakes in the heat of passion.
 
 <br><br>
 
