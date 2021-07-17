@@ -10,12 +10,12 @@ It also lets you benefit from subscription gifts and drops as long as you leave 
 <br>
 ### How To Connect Your Twitch Account?
 
-From <a href="https://twitchtokengenerator.com">here</a>, you can generate a Twitch token to use in **Twitch Lurker**. Give permission to everything while generating your token and inject it to **Twitch Lurker** when prompted.
+From <a href="https://twitchtokengenerator.com" target="_blank">here</a>, you can generate a Twitch token to use in **Twitch Lurker**. Give permission to everything while generating your token and inject it to **Twitch Lurker** when prompted.
 <br>
 
 ### How To Edit Twitch Lurker?
 
-From <a href="https://github.com/ardaerbaharli/twitchLurkerV2/blob/main/CriteriaControls.cs"> here</a> (file name on your local repo would be CriteriaControl.cs), you can edit viewer count and which files to use for criteria control.
+From <a href="https://github.com/ardaerbaharli/twitchLurkerV2/blob/main/CriteriaControls.cs" target="_blank"> here</a> (file name on your local repo would be CriteriaControl.cs), you can edit viewer count and which files to use for criteria control.
 
 ## IMPORTANT NOTE: It is not suggested that you change the default values in *CriteriaControl.cs* but we all make mistakes in the heat of passion.
 
