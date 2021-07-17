@@ -7,7 +7,10 @@
 **Twitch Lurker** is a bot that joins to chat room of the Twitch channels you follow.
 It acts as a chatter and sends messages to as many channels as you wish at the same time without you needing to open up Twitch.
 It also lets you benefit from subscription gifts and drops as long as you leave it on.
+<br>
+### What is Twitch Lurker?
 
+From <a href="https://twitchtokengenerator.com">here</a>, you can generate a Twitch token to use in **Twitch Lurker**. Give permission to everything while generating your token and inject it to **Twitch Lurker** when prompted.
 <br>
 
 ### How To Edit Twitch Lurker?
