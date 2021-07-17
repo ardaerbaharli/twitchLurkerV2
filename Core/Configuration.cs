@@ -20,7 +20,7 @@ namespace TwitchLurkerV2.Core
 
         public static void Configurate(Lurker lurker)
         {
-           // SetPaths();
+            SetPaths();
             _lurker = lurker;
 
             bool isMessagingOn = GetMessagingStatus();

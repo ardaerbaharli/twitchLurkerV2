@@ -235,14 +235,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TwitchLurkerV2.exe" size="154608">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TwitchLurkerV2.exe" size="157168">
       <assemblyIdentity name="TwitchLurkerV2" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>hYimrrNbIsMPOertv5PnaC/9pSRDvJZWZotvg3vGBj4=</dsig:DigestValue>
+        <dsig:DigestValue>PDlb4aPYfSGSgRFCOjhNRg9rt2x0WX4hkqmqA5cQ2aU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

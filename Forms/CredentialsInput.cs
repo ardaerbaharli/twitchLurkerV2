@@ -45,7 +45,7 @@ namespace TwitchLurkerV2
 
         private void CredentialsInput_Load(object sender, EventArgs e)
         {
-            Configuration.SetPaths();
+            //Configuration.SetPaths();
             btnSubmit.FlatStyle = FlatStyle.Flat;
             btnSubmit.FlatAppearance.BorderSize = 0;
             btnSubmit.TabStop = false;

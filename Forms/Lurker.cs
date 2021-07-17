@@ -71,7 +71,7 @@ namespace TwitchLurkerV2
             if (Main.joinedChannels.Count > 0)
                 foreach (var c in Main.joinedChannels.ToList())
                 {
-                    Main.Client.JoinChannel(c);
+                    Main.client.JoinChannel(c);
                 }
         }
         private async void UpdateOnlineChannelsTimer_Tick(object sender, EventArgs e)
