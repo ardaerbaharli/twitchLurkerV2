@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Api;
+using TwitchLurkerV2.Core;
 
-namespace TwitchLurkerV2
+namespace TwitchLurkerV2.Helpers
 {
     class CriteriaControls
     {
+      
         public static async Task<bool> DoesStreamHaveMoreThan2000Viewers(TwitchAPI api, string channelID)
         {
             try
@@ -35,10 +34,8 @@ namespace TwitchLurkerV2
         }
         public static bool IsBlacklisted(string channelName)
         {
-            
-            return Lurker.blacklistedChannelList.Contains(channelName);
+            return Configuration.BlacklistedChannelList.Contains(channelName);
         }
-
         public static async Task<bool> IsOnline(TwitchAPI api, string channelID)
         {
             bool isOnline;

@@ -176,17 +176,17 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer updateOnlineChannelsTimer;
-        private System.Windows.Forms.Label lblLurkCount;
-        private System.Windows.Forms.Label lblFollowedCount;
-        private System.Windows.Forms.Label lblConnected;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Label lblSubCount;
-        private System.Windows.Forms.Label lblMessageCount;
-        private System.Windows.Forms.Timer uptimeTimer;
-        private System.Windows.Forms.Label lblUptime;
-        private System.Windows.Forms.Timer stayOnline;
-        private System.Windows.Forms.CheckBox checkMessages;
+        public System.Windows.Forms.Timer updateOnlineChannelsTimer;
+        public System.Windows.Forms.Label lblLurkCount;
+        public System.Windows.Forms.Label lblFollowedCount;
+        public System.Windows.Forms.Label lblConnected;
+        public System.Windows.Forms.Button btnClose;
+        public System.Windows.Forms.Label lblSubCount;
+        public System.Windows.Forms.Label lblMessageCount;
+        public System.Windows.Forms.Timer uptimeTimer;
+        public System.Windows.Forms.Label lblUptime;
+        public System.Windows.Forms.Timer stayOnline;
+        public System.Windows.Forms.CheckBox checkMessages;
     }
 }
 

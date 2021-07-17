@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TwitchLurkerV2.Core;
 
 namespace TwitchLurkerV2
 {
@@ -43,7 +44,8 @@ namespace TwitchLurkerV2
         #endregion
 
         private void CredentialsInput_Load(object sender, EventArgs e)
-        {           
+        {
+            Configuration.SetPaths();
             btnSubmit.FlatStyle = FlatStyle.Flat;
             btnSubmit.FlatAppearance.BorderSize = 0;
             btnSubmit.TabStop = false;
@@ -68,19 +70,10 @@ namespace TwitchLurkerV2
             }
             else
             {
-                Lurker.credentialsInputExitStatus = true;
-                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                string path = Path.Combine(appDataPath, @"Chastoca");
-                path = Path.Combine(path, "LurkerV2");
-                path = Path.Combine(path, "Config");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                path = Path.Combine(path, "ConnectionCredentials.txt");
+                Lurker.credentialsInputExitStatus = true;               
                 string content = $"username: {txtUsername.Text}" +
                                  $"\nlurkerToken: {txtLurkerToken.Text}";
-                File.WriteAllText(path, content);
+                File.WriteAllText(Configuration.CredentialsPath, content);
                 this.Close();
             }
         }

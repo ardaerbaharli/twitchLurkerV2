@@ -168,22 +168,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Configuration.cs" />
+    <Compile Include="Core\Twitch\Main.cs" />
     <Compile Include="Forms\CredentialsInput.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\CredentialsInput.Designer.cs">
       <DependentUpon>CredentialsInput.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\CriteriaControls.cs" />
+    <Compile Include="Helpers\CriteriaControls.cs" />
     <Compile Include="Forms\Lurker.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Lurker.Designer.cs">
       <DependentUpon>Lurker.cs</DependentUpon>
     </Compile>
-    <Compile Include="Objects\Log.cs" />
-    <Compile Include="Modules\LogHandler.cs" />
-    <Compile Include="Modules\Program.cs" />
+    <Compile Include="Types\Credential.cs" />
+    <Compile Include="Types\Log.cs" />
+    <Compile Include="Helpers\LogHandler.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\CredentialsInput.resx">
       <DependentUpon>CredentialsInput.cs</DependentUpon>
@@ -233,5 +236,6 @@
     <Content Include="Stuff\logo.ico" />
     <Content Include="Stuff\twitchLurkerV2.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

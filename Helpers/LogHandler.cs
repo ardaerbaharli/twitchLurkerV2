@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace TwitchLurkerV2
+namespace TwitchLurkerV2.Helpers
 {
     class LogHandler
     {
@@ -14,7 +14,6 @@ namespace TwitchLurkerV2
             {
                 logDirectory = Path.Combine(logDirectory, item);
             }
-            //    logDirectory = Path.Combine(logDirectory, log.LogName);
 
             if (!Directory.Exists(logDirectory))
                 Directory.CreateDirectory(logDirectory);
@@ -33,7 +32,7 @@ namespace TwitchLurkerV2
 
         public static void CrashReport(Exception ex)
         {
-            Log crashReport = new Log();
+            var crashReport = new Log();
             crashReport.FolderDirectory = new string[] { "CrashReports" };
             crashReport.LogName = "CrashReport";
             crashReport.Message = string.Format("Exception message: {0}\nStack trace:\n{1}", ex.Message, ex.StackTrace);
