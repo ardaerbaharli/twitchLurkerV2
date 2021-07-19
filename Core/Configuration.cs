@@ -90,9 +90,7 @@ namespace TwitchLurkerV2.Core
                 {
                     Main m = new Main();
                     m.Connect(_lurker, c);
-                }
-                else
-                    SetCredentials(GetCredentials());
+                }              
             }
             catch (Exception ex)
             {
