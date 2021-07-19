@@ -58,6 +58,7 @@ namespace TwitchLurkerV2
             this.label1.Size = new System.Drawing.Size(104, 21);
             this.label1.TabIndex = 1;
             this.label1.Text = "Username:";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txtUsername
             // 
@@ -66,6 +67,7 @@ namespace TwitchLurkerV2
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(180, 33);
             this.txtUsername.TabIndex = 2;
+            this.txtUsername.TextChanged += new System.EventHandler(this.txtUsername_TextChanged);
             // 
             // btnSubmit
             // 
@@ -84,6 +86,7 @@ namespace TwitchLurkerV2
             this.txtLurkerToken.Name = "txtLurkerToken";
             this.txtLurkerToken.Size = new System.Drawing.Size(180, 33);
             this.txtLurkerToken.TabIndex = 2;
+            this.txtLurkerToken.TextChanged += new System.EventHandler(this.txtLurkerToken_TextChanged);
             // 
             // label2
             // 
@@ -94,6 +97,7 @@ namespace TwitchLurkerV2
             this.label2.Size = new System.Drawing.Size(115, 21);
             this.label2.TabIndex = 1;
             this.label2.Text = "Auth token:";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // linkAuthToken
             // 
