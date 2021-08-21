@@ -13,7 +13,7 @@ namespace TwitchLurkerV2.Core
         private static Lurker _lurker;
         public static List<string> EmoteList = new List<string>() { };
         public static List<string> BlacklistedChannelList = new List<string>() { };
-        public static string MsgPath { get; set; }
+        public static string SettingsPath { get; set; }
         public static string CredentialsPath { get; set; }
         public static string EmotesPath { get; set; }
         public static string BlacklistChannelsPath { get; set; }
@@ -45,8 +45,7 @@ namespace TwitchLurkerV2.Core
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-
-            MsgPath = Path.Combine(path, "Settings.txt");
+            SettingsPath = Path.Combine(path, "Settings.txt");
             CredentialsPath = Path.Combine(path, "ConnectionCredentials.txt");
             EmotesPath = Path.Combine(path, "Emotes.txt");
             BlacklistChannelsPath = Path.Combine(path, "BlacklistedChannels.txt");
@@ -90,7 +89,7 @@ namespace TwitchLurkerV2.Core
                 {
                     Main m = new Main();
                     m.Connect(_lurker, c);
-                }              
+                }
             }
             catch (Exception ex)
             {
@@ -107,10 +106,10 @@ namespace TwitchLurkerV2.Core
             try
             {
                 string prefName = "SendMessages";
-                if (File.Exists(MsgPath))
+                if (File.Exists(SettingsPath))
                 {
                     // read the file               
-                    var content = File.ReadAllLines(MsgPath).ToList();
+                    var content = File.ReadAllLines(SettingsPath).ToList();
 
                     foreach (var item in content)
                     {
@@ -134,12 +133,11 @@ namespace TwitchLurkerV2.Core
             {
                 string prefName = "SendMessages";
 
-                bool doesEmoteFileExists = File.Exists(MsgPath);
-                if (doesEmoteFileExists)
+                if (File.Exists(SettingsPath))
                 {
                     _lurker.checkMessages.Checked = state;
                     var content = $"{prefName}:{state}";
-                    File.WriteAllText(MsgPath, content.ToString());
+                    File.WriteAllText(SettingsPath, content.ToString());
                 }
             }
             catch (Exception ex)
@@ -202,6 +200,7 @@ namespace TwitchLurkerV2.Core
                 {
                     // read the file               
                     blacklistChannels = File.ReadAllLines(BlacklistChannelsPath).ToList();
+                    blacklistChannels = blacklistChannels.ConvertAll(d => d.ToLower());
                 }
                 else
                 {

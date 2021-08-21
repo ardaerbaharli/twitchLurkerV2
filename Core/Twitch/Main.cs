@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api;
+using TwitchLib.Api.Helix.Models.Streams;
 using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Client;
 using TwitchLib.Client.Models;
@@ -27,7 +28,7 @@ namespace TwitchLurkerV2.Core.Twitch
         private static List<Follow> followList { get; set; }
         private static List<string> subList { get; set; }
 
-        public void Connect(Lurker lurker, Credential c)
+        public async void Connect(Lurker lurker, Credential c)
         {
             try
             {
@@ -41,11 +42,11 @@ namespace TwitchLurkerV2.Core.Twitch
                 _credential = c;
 
                 _credential.ClientID = "gp762nuuoqcoxypju8c569th9wz7q5";
-
                 JoinChannelsCount = 0;
                 SentMessageCount = 0;
 
                 var credentials = new ConnectionCredentials(_credential.LurkerName, _credential.LurkerToken);
+
                 client = new TwitchClient();
                 client.Initialize(credentials);
 
@@ -58,6 +59,8 @@ namespace TwitchLurkerV2.Core.Twitch
                 api.Settings.ClientId = _credential.ClientID;
                 api.Settings.AccessToken = _credential.LurkerToken;
 
+                _credential.LurkerID = (await api.V5.Users.GetUserByNameAsync(_credential.LurkerName)).Matches.First().Id;
+
                 client.Connect();
             }
             catch (Exception ex)
@@ -69,6 +72,7 @@ namespace TwitchLurkerV2.Core.Twitch
         #region Events
         private async void Client_OnConnected(object sender, TwitchLib.Client.Events.OnConnectedArgs e)
         {
+
             _lurker.lblConnected.Text = "Connected to " + _credential.LurkerName + ".";
             bool isJoined = await StartLurking();
 
@@ -182,6 +186,7 @@ namespace TwitchLurkerV2.Core.Twitch
                 // set the follower list
                 await SetFollowList();
                 // control if the channel is online and/or subscribed
+
                 await JoinChannels();
                 _lurker.stayOnline.Enabled = true;
                 _lurker.stayOnline.Start();
@@ -193,10 +198,27 @@ namespace TwitchLurkerV2.Core.Twitch
             }
             return true;
         }
+        private Stream[] top50Streams;
         private async Task<bool> SetFollowList()
         {
             try
             {
+                //top50Streams = (await api.Helix.Streams.GetStreamsAsync(first: 50, languages: new List<string>() { "en", "tr" })).Streams;
+
+                //foreach (var stream in top50Streams)
+                //{
+                //    if (!string.IsNullOrEmpty(stream.UserId))
+                //    {
+                //        bool isFollowing = await CriteriaControls.IsFollowing(api, stream.UserId, _credential.LurkerID);
+                //        if (!isFollowing)
+                //        {
+                //            await api.V5.Users.FollowChannelAsync(_credential.LurkerID, stream.UserId, false, _credential.LurkerToken);
+                //            Console.WriteLine("stream id:" + stream.UserId);
+                //        }
+                //    }
+                //}
+
+
                 // reset the counter
                 followList.Clear();
 
@@ -239,6 +261,9 @@ namespace TwitchLurkerV2.Core.Twitch
             }
             return true;
         }
+
+
+
         public async Task<bool> JoinChannels()
         {
             try

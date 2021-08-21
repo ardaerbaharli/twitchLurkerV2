@@ -7,7 +7,7 @@ namespace TwitchLurkerV2.Helpers
 {
     class CriteriaControls
     {
-      
+
         public static async Task<bool> DoesStreamHaveMoreThan2000Viewers(TwitchAPI api, string channelID)
         {
             try
@@ -15,7 +15,8 @@ namespace TwitchLurkerV2.Helpers
                 var channel = await api.V5.Streams.GetStreamByUserAsync(channelID);
                 if (channel != null)
                 {
-                    if (channel.Stream != null) { 
+                    if (channel.Stream != null)
+                    {
                         if (channel.Stream.Viewers > 2000)
                             return true;
                         else
@@ -34,7 +35,7 @@ namespace TwitchLurkerV2.Helpers
         }
         public static bool IsBlacklisted(string channelName)
         {
-            return Configuration.BlacklistedChannelList.Contains(channelName);
+            return Configuration.BlacklistedChannelList.Contains(channelName.ToLower());
         }
         public static async Task<bool> IsOnline(TwitchAPI api, string channelID)
         {
@@ -64,6 +65,21 @@ namespace TwitchLurkerV2.Helpers
                 return false;
             }
             return true;
+        }
+        public static async Task<bool> IsFollowing(TwitchAPI api, string channelID, string lurkerID)
+        {
+            // if the lurker is not following the channel, it will throw an error
+            // with that error, we return false 
+
+            try
+            {
+                var ch = await api.V5.Users.CheckUserFollowsByChannelAsync(lurkerID, channelID);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
