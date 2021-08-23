@@ -6,7 +6,7 @@
 
 **Twitch Lurker** is a bot that joins to chat room of the Twitch channels you follow.
 It acts as a chatter and sends messages to as many channels as you wish at the same time without you needing to open up Twitch.
-It also lets you benefit from subscription gifts and drops as long as you leave it on.
+It also lets you benefit from subscription gifts as long as you leave it on.
 <br>
 ### How To Connect Your Twitch Account?
 
@@ -41,19 +41,33 @@ public static async Task<bool> DoesStreamHaveMoreThan2000Viewers(TwitchAPI api, 
 
 -Bot has default blacklisted channels. You can delete the current ones or add more channels.
 
->In order to add more channels, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>BlacklistedChannels* and type in the channel ID you want to blacklist.
+>In order to add more channels:
+>- Go to Windows search and type in *%appdata%*. 
+>- From there, go to *Chastoca>LurkerV2>Config>BlacklistedChannels* and type in the channel name you want to blacklist.
 
 <br>
 
 -Bot only sends emotes as messages and has some default emotes. You can delete the default ones or add more to them.
 
->In order to edit emotes, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>Emotes* and edit emotes in the text file as you please.
+>In order to edit emotes:
+>- Go to Windows search and type in *%appdata%*.
+>- From there, go to *Chastoca>LurkerV2>Config>Emotes* and edit emotes in the text file as you please. Note that, every line is a message.
 
 <br>
 
 -You can change your connection credentials if you wish to change the account connected to bot.
 
->In order to change connection credentials, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>ConnectionCredentials* and change login details.
+>In order to change connection credentials:
+>- Go to Windows search and type in *%appdata%*.
+>- From there, go to *Chastoca>LurkerV2>Config>ConnectionCredentials* and change login details.
+
+<br>
+
+-Bot has an option to lurk only the specified channels. If you wish to use that option:
+
+>- First, check *Targeted* checkbox in TwitchLurkerV2 app.
+>- After that, go to Windows search and type in *%appdata%*. From there, go to *Chastoca>LurkerV2>Config>TargetChannels* and type in the channel name you want to lurk. (Case sensitive.)
+>- *After*, you restart the app, the bot will only lurk on the specified channels.
 
 <br><br>
 
@@ -63,11 +77,13 @@ First, go to Windows search and type in *%appdata%*, then navigate to **Chastoca
 
 <br>
 
-> - You can check crash reports from **CrashReports**
+> - You can check crash reports from **CrashReports**.
+> - You can check Whispers from **Whispers**.
 > - You can see if anyone mentioned you in the chat from **Mentions**.
 > In mentions you have two files:
 > - From ChatLogs, you can see the channel name, link ID, person who sent the message and the message itself.
 > - From StreamIDs, you can see when the message was sent and link of the clip from the time message was sent.
+
 
 <br>
 
