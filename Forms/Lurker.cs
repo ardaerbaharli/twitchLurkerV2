@@ -101,9 +101,12 @@ namespace TwitchLurkerV2
         }
         private void CheckMessages_CheckedChanged(object sender, EventArgs e)
         {
-            bool status = Configuration.GetMessagingStatus();
-            Configuration.SetMessagingStatus(status);
+            Configuration.SetMessagingStatus(checkMessages.Checked);
         }
-        #endregion
+        private void checkTargeted_CheckedChanged(object sender, EventArgs e)
+        {
+            Configuration.SetTargetedStatus(checkTargeted.Checked);
+        }
+        #endregion       
     }
 }

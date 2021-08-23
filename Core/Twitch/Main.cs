@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwitchLib.Api;
 using TwitchLib.Api.Helix.Models.Streams;
-using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Client;
 using TwitchLib.Client.Models;
 using TwitchLurkerV2.Helpers;
@@ -21,11 +20,11 @@ namespace TwitchLurkerV2.Core.Twitch
         private Lurker _lurker { get; set; }
         private Credential _credential { get; set; }
 
-        private int JoinChannelsCount { get; set; }
         private int SentMessageCount { get; set; }
 
         public static List<string> joinedChannels { get; set; }
-        private static List<Follow> followList { get; set; }
+        private static List<TwitchUser> channelList { get; set; }
+        private static List<TwitchUser> followList { get; set; }
         private static List<string> subList { get; set; }
 
         public async void Connect(Lurker lurker, Credential c)
@@ -34,7 +33,8 @@ namespace TwitchLurkerV2.Core.Twitch
             {
                 instance = this;
 
-                followList = new List<Follow>();
+                channelList = new List<TwitchUser>();
+                followList = new List<TwitchUser>();
                 joinedChannels = new List<string>();
                 subList = new List<string>();
 
@@ -42,7 +42,6 @@ namespace TwitchLurkerV2.Core.Twitch
                 _credential = c;
 
                 _credential.ClientID = "gp762nuuoqcoxypju8c569th9wz7q5";
-                JoinChannelsCount = 0;
                 SentMessageCount = 0;
 
                 var credentials = new ConnectionCredentials(_credential.LurkerName, _credential.LurkerToken);
@@ -139,7 +138,6 @@ namespace TwitchLurkerV2.Core.Twitch
                 }
             }
         }
-
         private void Client_OnWhisperReceived(object sender, TwitchLib.Client.Events.OnWhisperReceivedArgs e)
         {
             try
@@ -183,10 +181,12 @@ namespace TwitchLurkerV2.Core.Twitch
         {
             try
             {
-                // set the follower list
+                // set follow list
                 await SetFollowList();
+                // set the channels to lurk list
+                await SetChannelList();
                 // control if the channel is online and/or subscribed
-
+                await CountSubs();
                 await JoinChannels();
                 _lurker.stayOnline.Enabled = true;
                 _lurker.stayOnline.Start();
@@ -198,8 +198,57 @@ namespace TwitchLurkerV2.Core.Twitch
             }
             return true;
         }
+
+        private async Task CountSubs()
+        {
+            foreach (var channel in followList)
+            {
+                bool isSubscribed = await CriteriaControls.IsSubscribed(api, channel.ID, _credential.LurkerID);
+                if (isSubscribed)
+                    if (!subList.Contains(channel.ID))
+                    {
+                        // if it is not already in the list, add it to the list                    
+                        subList.Add(channel.ID);
+                        _lurker.lblSubCount.Text = "Currently subscribed to " + subList.Count + " channels.";
+                    }
+            }
+        }
+
+        private async Task SetFollowList()
+        {
+            // get the lurker account
+            var lurker = (await api.V5.Users.GetUserByNameAsync(_credential.LurkerName)).Matches.First();
+            _credential.LurkerID = lurker.Id;
+
+            // request first 100 followers
+            var requestedFollowers = await api.Helix.Users.GetUsersFollowsAsync(first: 100, fromId: _credential.LurkerID);
+            // extract the follows from request
+            var list = requestedFollowers.Follows;
+            // add follows to the list
+            Array.ForEach(list, x => followList.Add(new TwitchUser(x.ToUserName, x.ToUserId)));
+            // total following channel count
+            long totalFollows = requestedFollowers.TotalFollows;
+
+            totalFollows -= 100;
+            while (totalFollows > 0)
+            {
+                // request firts requestingChannelCount follows
+                int requestingChannelCount = Convert.ToInt32(Math.Min(totalFollows, 100));
+
+                totalFollows -= requestingChannelCount;
+                // pagination for offset
+                string pagination = requestedFollowers.Pagination.Cursor;
+                // request the follows
+                requestedFollowers = await api.Helix.Users.GetUsersFollowsAsync(after: pagination, first: requestingChannelCount, fromId: _credential.LurkerID);
+                // extract the follows from request
+                list = requestedFollowers.Follows;
+                // add follows to the list
+                Array.ForEach(list, x => followList.Add(new TwitchUser(x.ToUserName, x.ToUserId)));
+            }
+        }
+
         private Stream[] top50Streams;
-        private async Task<bool> SetFollowList()
+        private async Task<bool> SetChannelList()
         {
             try
             {
@@ -217,42 +266,22 @@ namespace TwitchLurkerV2.Core.Twitch
                 //        }
                 //    }
                 //}
+                channelList.Clear();
 
-
-                // reset the counter
-                followList.Clear();
-
-                // get the lurker account
-                var lurker = (await api.V5.Users.GetUserByNameAsync(_credential.LurkerName)).Matches.First();
-                _credential.LurkerID = lurker.Id;
-
-                // request first 100 followers
-                var requestedFollowers = await api.Helix.Users.GetUsersFollowsAsync(first: 100, fromId: _credential.LurkerID);
-                // extract the follows from request
-                var list = requestedFollowers.Follows;
-                // add follows to the list
-                followList.AddRange(list.ToList());
-                // total following channel count
-                long totalFollows = requestedFollowers.TotalFollows;
-
-                totalFollows -= 100;
-                while (totalFollows > 0)
+                if (Configuration.IsTargetedChecked)
                 {
-                    // request firts requestingChannelCount follows
-                    int requestingChannelCount = Convert.ToInt32(Math.Min(totalFollows, 100));
-
-                    totalFollows -= requestingChannelCount;
-                    // pagination for offset
-                    string pagination = requestedFollowers.Pagination.Cursor;
-                    // request the follows
-                    requestedFollowers = await api.Helix.Users.GetUsersFollowsAsync(after: pagination, first: requestingChannelCount, fromId: _credential.LurkerID);
-                    // extract the follows from request
-                    list = requestedFollowers.Follows;
-                    // add follows to the list
-                    followList.AddRange(list.ToList());
+                    foreach (var cName in Configuration.TargetedChannels)
+                    {
+                        string cID = (await api.V5.Users.GetUserByNameAsync(cName)).Matches.First().Id;
+                        var channel = new TwitchUser(cName, cID);
+                        channelList.Add(channel);
+                    }
                 }
-
-                _lurker.lblFollowedCount.Text = "Currently following " + followList.Count + " channels.";
+                else
+                {
+                    channelList = followList;
+                }
+                _lurker.lblChannelListCount.Text = "Currently there are " + channelList.Count + " channels to lurk.";
             }
             catch (Exception ex)
             {
@@ -262,43 +291,22 @@ namespace TwitchLurkerV2.Core.Twitch
             return true;
         }
 
-
-
         public async Task<bool> JoinChannels()
         {
             try
             {
-                JoinChannelsCount++;
-
-                // if its 50th time calling this method, update follow list
-                if (JoinChannelsCount == 50)
-                {
-                    JoinChannelsCount = 0;
-                    await SetFollowList();
-                }
-
                 if (client != null)
                     if (!client.IsConnected)
                         client.Connect();
 
-                // check new subs and new online streams
                 var joinedChannelsAPI = client.JoinedChannels;
                 if (joinedChannels.Count != joinedChannels.Count)
                     await RestartBot();
                 else
-                    foreach (var c in followList.ToList())
+                    foreach (var c in channelList.ToList())
                     {
-                        string channelID = c.ToUserId;
-                        string channelName = c.ToUserName;
-
-                        bool isSubscribed = await CriteriaControls.IsSubscribed(api, channelID, _credential.LurkerID);
-                        if (isSubscribed)
-                            if (!subList.Contains(channelID))
-                            {
-                                // if it is not already in the list, add it to the list                    
-                                subList.Add(channelID);
-                                _lurker.lblSubCount.Text = "Currently subscribed to " + subList.Count + " channels.";
-                            }
+                        string channelID = c.ID;
+                        string channelName = c.Username;
 
                         bool isOnline = await CriteriaControls.IsOnline(api, channelID);
                         if (isOnline)
@@ -340,23 +348,32 @@ namespace TwitchLurkerV2.Core.Twitch
             }
             return true;
         }
-        private async Task RestartBot()
+        public async Task RestartBot()
         {
-            joinedChannels.Clear();
-            _lurker.lblLurkCount.Text = "Lurking " + joinedChannels.Count + " channels.";
-
-            var joinedChannelsAPI = client.JoinedChannels;
-            foreach (var c in joinedChannelsAPI.ToList())
+            try
             {
-                client.LeaveChannel(c.Channel);
+                joinedChannels.Clear();
+                _lurker.lblLurkCount.Text = "Lurking " + joinedChannels.Count + " channels.";
+
+                var joinedChannelsAPI = client.JoinedChannels;
+                foreach (var c in joinedChannelsAPI.ToList())
+                {
+                    client.LeaveChannel(c.Channel);
+                }
+                await SetChannelList();
+                await JoinChannels();
             }
-            await JoinChannels();
+            catch (Exception ex)
+            {
+                LogHandler.CrashReport(ex);
+            }
+
         }
         private bool SendRandomText(string channelName)
         {
             try
             {
-                if (_lurker.checkMessages.Checked)
+                if (Configuration.IsSendMessageChecked)
                 {
                     if (client.JoinedChannels.Any(x => x.Channel == channelName))
                     {

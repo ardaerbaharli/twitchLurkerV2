@@ -11,23 +11,37 @@ namespace TwitchLurkerV2.Core
     public class Configuration
     {
         private static Lurker _lurker;
-        public static List<string> EmoteList = new List<string>() { };
-        public static List<string> BlacklistedChannelList = new List<string>() { };
+        public static List<string> EmoteList { get; set; }
+        public static List<string> BlacklistedChannelList { get; set; }
+        public static List<string> TargetedChannels { get; set; }
         public static string SettingsPath { get; set; }
         public static string CredentialsPath { get; set; }
         public static string EmotesPath { get; set; }
         public static string BlacklistChannelsPath { get; set; }
+        public static string TargetChannelsPath { get; set; }
+        public static bool IsSendMessageChecked { get; set; }
+        public static bool IsTargetedChecked { get; set; }
 
         public static void Configurate(Lurker lurker)
         {
+            EmoteList = new List<string>();
+            BlacklistedChannelList = new List<string>();
+            TargetedChannels = new List<string>();
+
             SetPaths();
             _lurker = lurker;
 
             bool isMessagingOn = GetMessagingStatus();
             SetMessagingStatus(isMessagingOn);
 
+            bool isTargetedOn = GetTargetedStatus();
+            SetTargetedStatus(isTargetedOn);
+
             List<string> emotes = GetEmotes();
             SetEmotes(emotes);
+
+            List<string> channels = GetTargetedChannels();
+            SetTargetedChannels(channels);
 
             List<string> blacklistChannels = GetBlacklistedChannels();
             SetBlacklistedChannels(blacklistChannels);
@@ -35,6 +49,7 @@ namespace TwitchLurkerV2.Core
             var cred = GetCredentials();
             SetCredentials(cred);
         }
+
         public static void SetPaths()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -49,6 +64,7 @@ namespace TwitchLurkerV2.Core
             CredentialsPath = Path.Combine(path, "ConnectionCredentials.txt");
             EmotesPath = Path.Combine(path, "Emotes.txt");
             BlacklistChannelsPath = Path.Combine(path, "BlacklistedChannels.txt");
+            TargetChannelsPath = Path.Combine(path, "TargetChannels.txt");
         }
 
         public static Credential GetCredentials()
@@ -123,11 +139,13 @@ namespace TwitchLurkerV2.Core
             catch (Exception ex)
             {
                 LogHandler.CrashReport(ex);
+                IsSendMessageChecked = status;
                 return status;
             }
+            IsSendMessageChecked = status;
             return status;
         }
-        public static void SetMessagingStatus(bool state)
+        public static void SetMessagingStatus(bool status)
         {
             try
             {
@@ -135,9 +153,18 @@ namespace TwitchLurkerV2.Core
 
                 if (File.Exists(SettingsPath))
                 {
-                    _lurker.checkMessages.Checked = state;
-                    var content = $"{prefName}:{state}";
-                    File.WriteAllText(SettingsPath, content.ToString());
+                    _lurker.checkMessages.Checked = status;
+                    IsSendMessageChecked = status;
+
+                    var readContent = File.ReadAllLines(SettingsPath).ToList();
+                    string content = $"{prefName}:{status}";
+
+                    foreach (var c in readContent)
+                    {
+                        if (!c.Contains(prefName))
+                            content += $"\n{c}";
+                    }
+                    File.WriteAllText(SettingsPath, content);
                 }
             }
             catch (Exception ex)
@@ -145,6 +172,102 @@ namespace TwitchLurkerV2.Core
                 LogHandler.CrashReport(ex);
             }
 
+        }
+
+        public static bool GetTargetedStatus()
+        {
+            bool status = false;
+
+            try
+            {
+                string prefName = "Targeted";
+                if (File.Exists(SettingsPath))
+                {
+                    // read the file               
+                    var content = File.ReadAllLines(SettingsPath).ToList();
+
+                    foreach (var item in content)
+                    {
+                        if (item.Contains(prefName))
+                        {
+                            status = bool.Parse(item.Substring(prefName.Length + ":".Length));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHandler.CrashReport(ex);
+                IsTargetedChecked = status;
+                return status;
+            }
+            IsTargetedChecked = status;
+            Console.WriteLine(status);
+            return status;
+        }
+        public static void SetTargetedStatus(bool status)
+        {
+            try
+            {
+                string prefName = "Targeted";
+
+                if (File.Exists(SettingsPath))
+                {
+                    Console.WriteLine(status);
+                    _lurker.checkTargeted.Checked = status;
+                    IsTargetedChecked = status;
+                    var readContent = File.ReadAllLines(SettingsPath).ToList();
+                    string content = $"{prefName}:{status}";
+
+                    foreach (var c in readContent)
+                    {
+                        if (!c.Contains(prefName))
+                            content += $"\n{c}";
+                    }
+
+                    File.WriteAllText(SettingsPath, content);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHandler.CrashReport(ex);
+            }
+        }
+
+        public static bool SetTargetedChannels(List<string> channels)
+        {
+            try
+            {
+                if (channels != null)
+                    TargetedChannels = channels;
+            }
+            catch (Exception ex)
+            {
+                LogHandler.CrashReport(ex);
+                return false;
+            }
+            return true;
+        }
+        public static List<string> GetTargetedChannels()
+        {
+            try
+            {
+                List<string> e = null;
+                if (File.Exists(TargetChannelsPath))
+                {
+                    e = File.ReadAllLines(TargetChannelsPath).ToList();
+                }
+                else
+                {
+                    File.Create(TargetChannelsPath);
+                }
+                return e;
+            }
+            catch (Exception ex)
+            {
+                LogHandler.CrashReport(ex);
+                return null;
+            }
         }
 
         private static List<string> GetEmotes()

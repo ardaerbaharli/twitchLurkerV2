@@ -78,6 +78,7 @@ namespace TwitchLurkerV2.Helpers
             }
             catch (Exception ex)
             {
+                LogHandler.CrashReport(ex);
                 return false;
             }
         }

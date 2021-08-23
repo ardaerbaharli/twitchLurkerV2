@@ -188,6 +188,7 @@
     <Compile Include="Helpers\LogHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\TwitchUser.cs" />
     <EmbeddedResource Include="Forms\CredentialsInput.resx">
       <DependentUpon>CredentialsInput.cs</DependentUpon>
     </EmbeddedResource>

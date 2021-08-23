@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Lurker));
             this.updateOnlineChannelsTimer = new System.Windows.Forms.Timer(this.components);
             this.lblLurkCount = new System.Windows.Forms.Label();
-            this.lblFollowedCount = new System.Windows.Forms.Label();
+            this.lblChannelListCount = new System.Windows.Forms.Label();
             this.lblConnected = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.lblSubCount = new System.Windows.Forms.Label();
@@ -41,6 +41,7 @@
             this.lblUptime = new System.Windows.Forms.Label();
             this.stayOnline = new System.Windows.Forms.Timer(this.components);
             this.checkMessages = new System.Windows.Forms.CheckBox();
+            this.checkTargeted = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // updateOnlineChannelsTimer
@@ -58,15 +59,15 @@
             this.lblLurkCount.TabIndex = 0;
             this.lblLurkCount.Text = "Lurking 0 channels.";
             // 
-            // lblFollowedCount
+            // lblChannelListCount
             // 
-            this.lblFollowedCount.AutoSize = true;
-            this.lblFollowedCount.Font = new System.Drawing.Font("Gadugi", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFollowedCount.Location = new System.Drawing.Point(12, 40);
-            this.lblFollowedCount.Name = "lblFollowedCount";
-            this.lblFollowedCount.Size = new System.Drawing.Size(287, 21);
-            this.lblFollowedCount.TabIndex = 2;
-            this.lblFollowedCount.Text = "Currently following 0 channels.";
+            this.lblChannelListCount.AutoSize = true;
+            this.lblChannelListCount.Font = new System.Drawing.Font("Gadugi", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblChannelListCount.Location = new System.Drawing.Point(12, 40);
+            this.lblChannelListCount.Name = "lblChannelListCount";
+            this.lblChannelListCount.Size = new System.Drawing.Size(346, 21);
+            this.lblChannelListCount.TabIndex = 2;
+            this.lblChannelListCount.Text = "Currently there are 0 channels to lurk.";
             // 
             // lblConnected
             // 
@@ -83,7 +84,7 @@
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btnClose.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(335, 3);
+            this.btnClose.Location = new System.Drawing.Point(362, 3);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(33, 26);
             this.btnClose.TabIndex = 5;
@@ -137,7 +138,7 @@
             this.checkMessages.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkMessages.Checked = true;
             this.checkMessages.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkMessages.Location = new System.Drawing.Point(299, 196);
+            this.checkMessages.Location = new System.Drawing.Point(318, 198);
             this.checkMessages.Name = "checkMessages";
             this.checkMessages.Size = new System.Drawing.Size(69, 17);
             this.checkMessages.TabIndex = 6;
@@ -145,18 +146,31 @@
             this.checkMessages.UseVisualStyleBackColor = true;
             this.checkMessages.CheckedChanged += new System.EventHandler(this.CheckMessages_CheckedChanged);
             // 
+            // checkTargeted
+            // 
+            this.checkTargeted.AutoSize = true;
+            this.checkTargeted.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkTargeted.Location = new System.Drawing.Point(243, 198);
+            this.checkTargeted.Name = "checkTargeted";
+            this.checkTargeted.Size = new System.Drawing.Size(69, 17);
+            this.checkTargeted.TabIndex = 6;
+            this.checkTargeted.Text = "Targeted";
+            this.checkTargeted.UseVisualStyleBackColor = true;
+            this.checkTargeted.CheckedChanged += new System.EventHandler(this.checkTargeted_CheckedChanged);
+            // 
             // Lurker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(41)))), ((int)(((byte)(41)))));
-            this.ClientSize = new System.Drawing.Size(372, 225);
+            this.ClientSize = new System.Drawing.Size(399, 225);
             this.ControlBox = false;
+            this.Controls.Add(this.checkTargeted);
             this.Controls.Add(this.checkMessages);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblConnected);
             this.Controls.Add(this.lblSubCount);
-            this.Controls.Add(this.lblFollowedCount);
+            this.Controls.Add(this.lblChannelListCount);
             this.Controls.Add(this.lblUptime);
             this.Controls.Add(this.lblMessageCount);
             this.Controls.Add(this.lblLurkCount);
@@ -178,7 +192,7 @@
 
         public System.Windows.Forms.Timer updateOnlineChannelsTimer;
         public System.Windows.Forms.Label lblLurkCount;
-        public System.Windows.Forms.Label lblFollowedCount;
+        public System.Windows.Forms.Label lblChannelListCount;
         public System.Windows.Forms.Label lblConnected;
         public System.Windows.Forms.Button btnClose;
         public System.Windows.Forms.Label lblSubCount;
@@ -187,6 +201,7 @@
         public System.Windows.Forms.Label lblUptime;
         public System.Windows.Forms.Timer stayOnline;
         public System.Windows.Forms.CheckBox checkMessages;
+        public System.Windows.Forms.CheckBox checkTargeted;
     }
 }
 
