@@ -116,15 +116,17 @@ namespace TwitchLurkerV2.Core.Twitch
                             var rand = new Random();
                             int streamID = rand.Next(10000000, 100000000);
 
+                            string date = $"{DateTime.Now.Month}/{DateTime.Now.Year}";
+
                             var streamIDLog = new Log();
-                            streamIDLog.FolderDirectory = new string[] { "Mentions", "StreamIDs" };
+                            streamIDLog.FolderDirectory = new string[] { date, "Mentions", "StreamIDs" };
                             streamIDLog.LogName = "StreamID";
                             streamIDLog.Message = $"{streamID} || Time: {uptime} >> Link: {streamURL}";
                             streamIDLog.TimeStamp = true;
                             LogHandler.Log(streamIDLog);
 
                             var mentionLog = new Log();
-                            mentionLog.FolderDirectory = new string[] { "Mentions", "ChatLogs" };
+                            mentionLog.FolderDirectory = new string[] { date, "Mentions", "ChatLogs" };
                             mentionLog.LogName = "ChatLog";
                             mentionLog.Message = $"{e.ChatMessage.Channel} || Stream ID : {streamID} || {e.ChatMessage.Username} : {e.ChatMessage.Message} ";
                             mentionLog.TimeStamp = true;

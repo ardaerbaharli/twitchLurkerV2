@@ -302,7 +302,10 @@ namespace TwitchLurkerV2.Core
             try
             {
                 if (emotes != null)
+                {
                     EmoteList = emotes;
+                    _lurker.lblEmoteCount.Text = $"{EmoteList.Count} emotes in list.";
+                }
                 else
                     SetEmotes(GetEmotes());
             }

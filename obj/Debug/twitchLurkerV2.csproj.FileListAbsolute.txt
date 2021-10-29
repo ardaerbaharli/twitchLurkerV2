@@ -34,3 +34,10 @@ C:\Users\arda_\source\repos\twitchLurkerV2\twitchLurkerV2\obj\Debug\twitchLurker
 C:\Users\arda_\source\repos\twitchLurkerV2\twitchLurkerV2\obj\Debug\twitchLurkerV2.TrustInfo.xml
 C:\Users\arda_\source\repos\twitchLurkerV2\twitchLurkerV2\obj\Debug\TwitchLurkerV2.Lurker.resources
 C:\Users\arda_\source\repos\twitchLurkerV2\twitchLurkerV2\obj\Debug\TwitchLurkerV2.CredentialsInput.resources
+F:\VSRepos\twitchLurkerV2\obj\Debug\TwitchLurkerV2.csproj.AssemblyReference.cache
+F:\VSRepos\twitchLurkerV2\obj\Debug\TwitchLurkerV2.CredentialsInput.resources
+F:\VSRepos\twitchLurkerV2\obj\Debug\TwitchLurkerV2.Lurker.resources
+F:\VSRepos\twitchLurkerV2\obj\Debug\TwitchLurkerV2.Properties.Resources.resources
+F:\VSRepos\twitchLurkerV2\obj\Debug\TwitchLurkerV2.csproj.GenerateResource.cache
+F:\VSRepos\twitchLurkerV2\obj\Debug\TwitchLurkerV2.exe
+F:\VSRepos\twitchLurkerV2\obj\Debug\TwitchLurkerV2.pdb

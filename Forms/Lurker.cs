@@ -89,6 +89,12 @@ namespace TwitchLurkerV2
         private void BtnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+            Environment.Exit(0);            
+        }
+
+        private void btnRestart_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
         }
 
         public void CredentialsInput_FormClosed(object sender, FormClosedEventArgs e)
@@ -107,6 +113,12 @@ namespace TwitchLurkerV2
         {
             Configuration.SetTargetedStatus(checkTargeted.Checked);
         }
-        #endregion       
+
+        #endregion
+
+        private void lblEmoteCount_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
