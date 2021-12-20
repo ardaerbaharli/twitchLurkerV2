@@ -1,3 +1,10 @@
+<br>
+
+## This project does not promote or encourage any illegal activities. All contents provided are meant for educational purpose only.
+
+## BE RESPONSIBLE AND DO NOT USE THIS BOT FOR MALICIOUS INTENT.!
+
+
 # twitchLurkerV2
 
 # Download **Twitch Lurker** from <a href="https://github.com/ardaerbaharli/twitchLurkerV2/releases/"> here</a>
@@ -85,6 +92,3 @@ First, go to Windows search and type in *%appdata%*, then navigate to **Chastoca
 > - From StreamIDs, you can see when the message was sent and link of the clip from the time message was sent.
 
 
-<br>
-
-## BE RESPONSIBLE AND DO NOT USE THIS BOT FOR MALICIOUS INTENT. HAVE FUN!
