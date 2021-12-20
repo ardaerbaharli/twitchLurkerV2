@@ -2,7 +2,7 @@
 
 ## This project does not promote or encourage any illegal activities. All contents provided are meant for educational purpose only.
 
-## BE RESPONSIBLE AND DO NOT USE THIS BOT FOR MALICIOUS INTENT.!
+## BE RESPONSIBLE AND DO NOT USE THIS BOT FOR MALICIOUS INTENT!
 
 
 # twitchLurkerV2
